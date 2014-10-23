@@ -3,6 +3,7 @@ package dk.statsbiblioteket.audio_qa.sound_index;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.Log4JLogger;
 import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -70,6 +71,7 @@ public class SoundIndexBuilderMapper extends Mapper<LongWritable, Text, LongWrit
         buildIndex(outputwavPath, databaseName, indexPath, fs);
         rmWav(outputwavPath, fs);
 
+        context.write(new LongWritable(0), new Text(databaseName));
     }
 
     private void rmWav(String outputwavPath, FileSystem fs) throws IOException {
